@@ -61,6 +61,10 @@ function show_cards(data) {
         event_image.className = 'event_image';
         event.append(event_image);
 
+        // var event_content_name = document.createElement('div');
+        // event_content_name.className = 'event_content_name';
+        // event.append(event_content_name);
+
         var event_name = document.createElement('div');
         event_name.textContent = data[i]['name'];
         event_name.className = 'event_name';
@@ -70,5 +74,25 @@ function show_cards(data) {
         event_content.textContent = data[i]['content'];
         event_content.className = 'event_content';
         event.append(event_content);
+
+        var update_event = document.createElement('div');
+        update_event.className = 'update_event';
+        event.append(update_event);
+
+        var update_event_a = document.createElement('a');
+        update_event_a.textContent = 'Обновить новость';
+        update_event_a.className = 'update_event_a';
+        update_event_a.href = '#';
+        update_event.append(update_event_a);
+
+        var delete_event = document.createElement('div');
+        delete_event.className = 'delete_event';
+        event.append(delete_event);
+
+        var delete_event_a = document.createElement('a');
+        delete_event_a.textContent = 'Удалить новость';
+        delete_event_a.className = 'delete_event_a';
+        delete_event_a.href = '#';
+        delete_event.append(delete_event_a);
     }
 }
