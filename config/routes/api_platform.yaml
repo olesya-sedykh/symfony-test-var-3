@@ -1,0 +1,14 @@
+events_list:
+    path: '/api/events'
+    controller: App\Controller\EventController::getEvents
+    methods: ['GET']
+
+event_detail:
+    path: /api/events/{id}
+    controller: App\Controller\EventController::getEventDetail
+    methods: [GET]
+
+api_platform:
+    resource: .
+    type: api_platform
+    prefix: /api
