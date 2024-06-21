@@ -8,6 +8,11 @@ event_detail:
     controller: App\Controller\EventController::getEventDetail
     methods: [GET]
 
+add_event:
+    path: '/api/events'
+    controller: App\Controller\EventController::addEvent
+    methods: ['POST']
+
 api_platform:
     resource: .
     type: api_platform

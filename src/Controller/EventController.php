@@ -79,5 +79,37 @@ class EventController extends AbstractController
         return new JsonResponse($data);
     }
 
+    #[Route('/api/events', name: 'add_event', methods: ["POST"])]
+    public function addEvent(Request $request, EntityManagerInterface $entityManager, EventRepository $eventRepository) {
+        try {
+            $requestData = $request->request->all();
     
+            if (!$requestData || !isset($requestData['name'])) {
+                throw new \Exception('Invalid data');
+            }
+    
+            $event = new Event();
+            $event->setName($requestData['name']);
+            $event->setContent($requestData['content']);
+            $event->setImage($requestData['image']);
+            $event->setDate($requestData['date']);
+            $event->setCategory($requestData['category']);
+    
+            $entityManager->persist($event);
+            $entityManager->flush();
+    
+            $data = [
+                'status' => 200,
+                'success' => "Событие успешно добавлено",
+            ];
+            return $this->json($data, 200, [], ['Content-Type' => 'application/ld+json']);
+        } 
+        catch (\Exception $e) {
+            $data = [
+                'status' => 422,
+                'errors' => "Данные не валидны",
+            ];
+            return $this->json($data, 422, [], ['Content-Type' => 'application/ld+json']);
+        }
+    }
 }
