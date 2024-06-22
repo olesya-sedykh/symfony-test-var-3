@@ -16,9 +16,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Component\HttpFoundation\Request;
 
-
-use Psr\Log\LoggerInterface;
-
 class EventController extends AbstractController
 {
     #[Route('/event', name: 'app_event')]
@@ -112,4 +109,27 @@ class EventController extends AbstractController
             return $this->json($data, 422, [], ['Content-Type' => 'application/ld+json']);
         }
     }
+
+    #[Route('/api/events/{id}', name: 'delete_event')]
+    public function deleteEvent($id, EventRepository $eventRepository, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $event = $eventRepository->find($id);
+
+        if (!$event) {
+            $data = [
+                'status' => 404,
+                'errors' => "Новость не найдена",
+            ];
+            return $this->json($data, 404);
+        }
+        
+        $entityManager->remove($event);
+        $entityManager->flush();
+        $data = [
+            'status' => 200,
+            'errors' => "Новость удалена успешно",
+        ];
+        return $this->json($data);
+    }
+        
 }

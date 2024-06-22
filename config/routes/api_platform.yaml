@@ -13,6 +13,11 @@ add_event:
     controller: App\Controller\EventController::addEvent
     methods: ['POST']
 
+delete_event:
+    path: /api/events/{id}
+    controller: App\Controller\EventController::deleteEvent
+    methods: ['DELETE']
+
 api_platform:
     resource: .
     type: api_platform

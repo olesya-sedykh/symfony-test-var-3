@@ -24,6 +24,7 @@ use App\Form\AddEventType;
         new GetCollection(),
         new Get(),
         new Post(),
+        new Delete(),
         ]
 )]
 class Event

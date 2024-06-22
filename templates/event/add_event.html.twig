@@ -21,6 +21,12 @@
     {{ form_end(eventForm) }}
 </div> #}
 
+<!DOCTYPE html>
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('form.css') }}">
+{% endblock %}
+
 <form id="event_form">
     <h2>Добавить новость:</h2>
     <div class="form_input">

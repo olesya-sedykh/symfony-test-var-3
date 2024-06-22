@@ -3,7 +3,7 @@ fetch('/api/events', {
   })
     .then((response) => response.json())
     .then((data) => {
-        console.log(data);
+        // console.log(data);
         show_cards(data['hydra:member']);
     }
   )
@@ -85,14 +85,44 @@ function show_cards(data) {
         update_event_a.href = '#';
         update_event.append(update_event_a);
 
-        var delete_event = document.createElement('div');
+        var delete_event = document.createElement('button');
+        delete_event.textContent = 'Удалить новость';
         delete_event.className = 'delete_event';
+        delete_event.id = data[i]['id'];
         event.append(delete_event);
 
-        var delete_event_a = document.createElement('a');
-        delete_event_a.textContent = 'Удалить новость';
-        delete_event_a.className = 'delete_event_a';
-        delete_event_a.href = '#';
-        delete_event.append(delete_event_a);
+        // var delete_event_a = document.createElement('a');
+        // delete_event_a.textContent = 'Удалить новость';
+        // delete_event_a.className = 'delete_event_a';
+        // delete_event_a.href = '#';
+        // delete_event.append(delete_event_a);
+    }
+
+
+
+
+    const buttons_delete = document.getElementsByClassName('delete_event');
+    for (let i = 0; i < buttons_delete.length; i++) {
+        buttons_delete[i].addEventListener('click', function() {
+            const eventId = this.getAttribute('id');
+            console.log('Удалить событие с идентификатором:', eventId);
+            fetch(`/api/events/${eventId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/event'; // Перенаправляем пользователя на страницу '/event' после успешного удаления
+                } 
+                else {
+                    throw new Error('Network response was not ok.');
+                }
+            })
+            .catch(error => {
+                console.error('Произошла ошибка:', error);
+            });
+        });
     }
 }
