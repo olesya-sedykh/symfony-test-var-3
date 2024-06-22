@@ -82,7 +82,7 @@ function show_cards(data) {
         var update_event_a = document.createElement('a');
         update_event_a.textContent = 'Обновить новость';
         update_event_a.className = 'update_event_a';
-        update_event_a.href = '#';
+        update_event_a.href = '/edit_event/' + data[i]['id'];
         update_event.append(update_event_a);
 
         var delete_event = document.createElement('button');

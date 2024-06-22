@@ -34,6 +34,15 @@ class EventController extends AbstractController
         ]);
     }
 
+    #[Route('/edit_event/{id}', name: 'show_edit_event')]
+    public function editEvent(EntityManagerInterface $entityManager, $id): Response
+    {
+        $event = $entityManager->getRepository(Event::class)->find($id);
+        return $this->render('event/edit_event.html.twig', [
+            'event' => $event,
+        ]);
+    }
+
     #[Route('/api/events', name: 'events_list', methods: "GET")]
     public function getEvents(EventRepository $eventRepository): JsonResponse
     {
@@ -110,7 +119,7 @@ class EventController extends AbstractController
         }
     }
 
-    #[Route('/api/events/{id}', name: 'delete_event')]
+    #[Route('/api/events/{id}', name: 'delete_event', methods: ["DELETE"])]
     public function deleteEvent($id, EventRepository $eventRepository, EntityManagerInterface $entityManager): JsonResponse
     {
         $event = $eventRepository->find($id);
@@ -131,5 +140,42 @@ class EventController extends AbstractController
         ];
         return $this->json($data);
     }
+
+    #[Route('/api/events/{id}', name: 'update_event', methods: ["PUT"])]
+    public function updateEvent(Request $request, EntityManagerInterface $entityManager, EventRepository $eventRepository, $id){
+        try{
+            $event = $eventRepository->find($id);
+            if (!$event){
+                $data = [
+                    'status' => 404,
+                    'errors' => "Новость не найдена",
+                ];
+                return $this->json($data, 404);
+            }
+            if (!$request || !$request->get('name')){
+                throw new \Exception();
+            }
         
+            $event->setName($request->get('name'));
+            $event->setContent($request->get('content'));
+            $event->setImage($request->get('image'));
+            $event->setDate($request->get('date'));
+            $event->setCategory($request->get('category'));
+            $entityManager->flush();
+        
+            $data = [
+                'status' => 200,
+                'errors' => "Новость успешно отредактирована",
+            ];
+            return $this->json($data);
+        
+        }
+        catch (\Exception $e){
+            $data = [
+                'status' => 422,
+                'errors' => "Данные не валидны",
+            ];
+            return $this->json($data, 422);
+        }
+    }
 }

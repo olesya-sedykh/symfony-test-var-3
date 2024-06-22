@@ -25,6 +25,7 @@ use App\Form\AddEventType;
         new Get(),
         new Post(),
         new Delete(),
+        new Put()
         ]
 )]
 class Event
